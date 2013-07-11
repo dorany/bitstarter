@@ -1,5 +1,7 @@
 fs = require('fs')
-var http = require("http");
+var express = require('express');
+
+var app = express.createServer(express.logger());
 
 fs.readFile('index.html', 'utf8', function (err,data) {
     if (err) {
@@ -8,13 +10,24 @@ fs.readFile('index.html', 'utf8', function (err,data) {
     //    console.log(data);
 	
     variable = data;	
-    
-    var server = http.createServer(function (peticion, respuesta){
-	respuesta.end(variable);
-    });
-    
-    
-    server.listen(5000, function(){
-   	console.log("tu servidor está listo en " + this.address().port);
-    }); 
+	
+	app.get('/', function(request, response) {
+  	response.send(variable);
+	});
+
+	var port = process.env.PORT || 5000;
+	app.listen(port, function() {
+  	console.log("Listening on " + port);
+});
+   
+
+ 
+//    var server = http.createServer(function (peticion, respuesta){
+//	respuesta.end(variable);
+//    });
+//    
+//    
+//    server.listen(5000, function(){
+//   	console.log("tu servidor está listo en " + this.address().port);
+//    }); 
 });
