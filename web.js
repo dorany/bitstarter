@@ -1,12 +1,20 @@
-var express = require('express');
+fs = require('fs')
+var http = require("http");
 
-var app = express.createServer(express.logger());
-
-app.get('/', function(request, response) {
-  response.send('Hello World 2 07-06-2013!');
-});
-
-var port = process.env.PORT || 5000;
-app.listen(port, function() {
-  console.log("Listening on " + port);
+fs.readFile('index.html', 'utf8', function (err,data) {
+    if (err) {
+	return console.log(err);
+    }
+    //    console.log(data);
+	
+    variable = data;	
+    
+    var server = http.createServer(function (peticion, respuesta){
+	respuesta.end(variable);
+    });
+    
+    
+    server.listen(5000, function(){
+   	console.log("tu servidor está listo en " + this.address().port);
+    }); 
 });
